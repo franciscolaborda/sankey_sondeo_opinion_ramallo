@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Estudio de opinión en la ciudad de Ramallo</title>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,700">
+
+
+      <link rel="stylesheet" type="text/css" href="../../web/css/dcreportes.css"/>
+      <link rel="stylesheet" href="../css/style.css">
+      <link type="text/css" href="../leaflet/web/css/leaflet.css" rel="stylesheet"/>
+    	<link type="text/css" href="../leaflet/web/css/MarkerCluster.Default.css" rel="stylesheet"/>
+    	<link type="text/css" href="../leaflet/web/css/MarkerCluster.css" rel="stylesheet"/>
+    	<link type="text/css" href="../leaflet/web/css/dc.css" rel="stylesheet"/>
+    	<link type="text/css" href="../leaflet/web/css/leaflet-legend.css" rel="stylesheet"/>
+      <script src="http://d3js.org/d3.v3.min.js"></script>
+
+
+<style>
+.legend {
+border: 1px solid #555555;
+border-radius: 5px 5px 5px 5px;
+font-size: 0.8em;
+margin: 10px;
+padding: 8px;
+}
+.bld {
+font-weight: bold;
+}
+.torta_instrumentos {
+margin-right: 100px;
+}
+
+.torta {
+margin-right: 100px;
+}
+.dc-data-count {
+float: right;
+margin-top: 15px;
+margin-right: 15px;
+}
+
+.dc-data-count .filter-count {
+color: #3182bd;
+font-weight: bold;
+}
+
+.dc-data-count .total-count {
+color: #3182bd;
+font-weight: bold;
+}
+
+
+.area {
+fill: steelblue;
+clip-path: url(#clip);
+}
+
+.graficos {
+width: 100%;
+display: inline-block;
+margin-left: auto;
+margin-right: auto;
+}
+
+.zoom {
+cursor: move;
+fill: none;
+pointer-events: all;
+}
+
+.arc text {
+font: 14px arial;
+text-anchor: middle;
+}
+
+.centrado {
+margin-left: auto;
+margin-right: auto;
+/*padding: 0 200px;*/
+width: 1200px;
+
+}
+.workcloud{
+margin-left: auto;
+margin-right: auto;
+}
+
+.arc path {
+stroke: #fff;}
+circle,
+path {
+cursor: pointer;
+}
+
+circle {
+fill: none;
+pointer-events: all;
+}
+
+#tooltip { background-color: white;
+	  padding: 3px 5px;
+	  border: 1px solid black;
+	  text-align: center;}
+
+html {
+font-family: sans-serif;
+
+
+}
+
+.node rect {
+cursor: move;
+fill-opacity: .9;
+shape-rendering: crispEdges;
+}
+
+.node text {
+pointer-events: none;
+text-shadow: 0 1px 0 #fff;
+font-family: 'Roboto', sans-serif;
+font-size: 18px;
+}
+
+.link {
+fill: none;
+stroke: #000;
+stroke-opacity: .2;
+}
+
+.link:hover {
+stroke-opacity: .5;
+}
+  </style>
+</head>
+
+<body>
+  <div id="wrapper" class="wrapper">
+  <header class="header">
+      <img src="logob.png">
+
+  </header>
+  <main>
+
+<div class="container">
+      <section>
+      <div class="margen" id="paxmes">
+        <h1>Diagrama Sankey: Estudio de opinión elaborado en la ciudad de Ramallo</h1>
+
+        <div id="github-icons"></div>
+
+        <div class="dc-data-count" style="float: right;">
+      <span>
+     <span class="filter-count"></span>
+
+
+
+
+   </span>
+   </div>
+
+
+        <div class="graficos">
+
+            <div id="sankeydiag">
+
+            </div>
+
+
+      </div>
+
+
+          </center>
+
+<div class="columnas" >
+
+
+
+</div>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="sankey.js"></script>
+<script>
+
+var units = "Casos";
+
+// DIMENSIONES Y MARGENES DEL GRAFICO
+var margin = {top: 10, right: 10, bottom: 10, left: 10},
+    width = 1200 - margin.left - margin.right,
+    height = 600 - margin.top - margin.bottom;
+
+// FORMATO DE LAS VARIABLES
+var formatNumber = d3.format(",.0f"),    // zero decimal places
+    format = function(d) { return formatNumber(d) + " " + units; },
+    color = d3.scaleOrdinal(d3.schemeCategory20);
+
+// SVG AL BODY
+var svg = d3.select("#sankeydiag").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+// PROPIEDADES
+var sankey = d3.sankey()
+    .nodeWidth(36)
+    .nodePadding(40)
+    .size([width, height]);
+
+var path = sankey.link();
+
+// CARGA DE DATOS
+d3.csv("sankey.csv", function(error, data) {
+
+
+  graph = {"nodes" : [], "links" : []};
+
+  data.forEach(function (d) {
+    graph.nodes.push({ "name": d.source });
+    graph.nodes.push({ "name": d.target });
+    graph.links.push({ "source": d.source,
+                       "target": d.target,
+                       "value": +d.value });
+   });
+
+  //  NODOS UNICOS
+  graph.nodes = d3.keys(d3.nest()
+    .key(function (d) { return d.name; })
+    .object(graph.nodes));
+
+  // LOOPEO SOBRE CADA LINK
+  graph.links.forEach(function (d, i) {
+    graph.links[i].source = graph.nodes.indexOf(graph.links[i].source);
+    graph.links[i].target = graph.nodes.indexOf(graph.links[i].target);
+  });
+
+  // ARRAY DE NODOS
+  graph.nodes.forEach(function (d, i) {
+    graph.nodes[i] = { "name": d };
+  });
+
+  sankey
+      .nodes(graph.nodes)
+      .links(graph.links)
+      .layout(32);
+
+  // AGREGAR LINKS
+  var link = svg.append("g").selectAll(".link")
+      .data(graph.links)
+    .enter().append("path")
+      .attr("class", "link")
+      .attr("d", path)
+      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
+      .sort(function(a, b) { return b.dy - a.dy; });
+
+  // TITULO A LOS LINKS
+  link.append("title")
+        .text(function(d) {
+    		return d.source.name + " → " +
+                d.target.name + "\n" + format(d.value); });
+
+  // AGREGAR A NODOS
+  var node = svg.append("g").selectAll(".node")
+      .data(graph.nodes)
+    .enter().append("g")
+      .attr("class", "node")
+      .attr("transform", function(d) {
+		  return "translate(" + d.x + "," + d.y + ")"; })
+      .call(d3.drag()
+        .subject(function(d) {
+          return d;
+        })
+        .on("start", function() {
+          this.parentNode.appendChild(this);
+        })
+        .on("drag", dragmove));
+
+  // RECTANGULOS A LOS NODOS
+  node.append("rect")
+      .attr("height", function(d) { return d.dy; })
+      .attr("width", sankey.nodeWidth())
+      .style("fill", function(d) {
+		  return d.color = color(d.name.replace(/ .*/, "")); })
+      .style("stroke", function(d) {
+		  return d3.rgb(d.color).darker(2); })
+    .append("title")
+      .text(function(d) {
+		  return d.name + "\n" + format(d.value); });
+
+  // TITULO A LOS NODOS
+  node.append("text")
+      .attr("x", -6)
+      .attr("y", function(d) { return d.dy / 2; })
+      .attr("dy", ".35em")
+      .attr("text-anchor", "end")
+      .attr("transform", null)
+      .text(function(d) { return d.name; })
+    .filter(function(d) { return d.x < width / 2; })
+      .attr("x", 6 + sankey.nodeWidth())
+      .attr("text-anchor", "start");
+
+  // FUNCION PARA MOVILIDAD DE NODOS
+  function dragmove(d) {
+    d3.select(this)
+      .attr("transform",
+            "translate("
+               + d.x + ","
+               + (d.y = Math.max(
+                  0, Math.min(height - d.dy, d3.event.y))
+                 ) + ")");
+    sankey.relayout();
+    link.attr("d", path);
+  }
+});
+
+</script>
+
+
+    </div>
+  </main>
+</div><!-- /wrapper -->
+
+<button id="mm-menu-toggle" class="mm-menu-toggle">Toggle Menu</button>
+<nav id="mm-menu" class="mm-menu">
+  <div class="mm-menu__header">
+    <h2 class="mm-menu__title">Ramallo</h2>
+  </div>
+  <ul class="mm-menu__items">
+    <li class="mm-menu__item">
+      <a class="mm-menu__link" href="../mapa_calor_ramallo.html">
+        <span class="mm-menu__link-text"><i class="md md-home"></i>Mapa de calor Ramallo</span>
+      </a>
+    </li>
+</ul>
+</nav><!-- /nav -->
+
+
+
+</body>
+
+<script src="../js/index.js"></script>
+
+
+
+
+</html>
