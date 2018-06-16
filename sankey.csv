@@ -1,0 +1,104 @@
+source,target,value
+16 a 24,Mujer,15
+16 a 24,Varón,24
+25 a 34,Mujer,21
+25 a 34,Varón,7
+35 a 44,Mujer,18
+35 a 44,Varón,12
+45 a 59,Mujer,23
+45 a 59,Varón,14
++60,Mujer,21
++60,Varón,14
+Mujer,sin estudios,41
+Mujer,hasta primario completo,24
+Mujer,hasta secundario completo,21
+Mujer,estudios superiores,2
+Varón,sin estudios,44
+Varón,hasta primario completo,24
+Varón,hasta secundario completo,12
+Varón,estudios superiores,2
+sin estudios,ama de casa,17
+hasta secundario completo,ama de casa,3
+hasta primario completo,ama de casa,5
+estudios superiores,empleado,2
+sin estudios,empleado,22
+hasta secundario completo,empleado,15
+hasta primario completo,empleado,15
+estudios superiores,empleado,2
+sin estudios,desocupado,13
+hasta secundario completo,desocupado,3
+hasta primario completo,desocupado,12
+estudios superiores,desocupado,1
+sin estudios,cuentapropista,6
+hasta secundario completo,cuentapropista,0
+hasta primario completo,cuentapropista,12
+estudios superiores,cuentapropista,0
+estudios superiores,desocupado,1
+sin estudios,empleador,3
+hasta secundario completo,empleador,3
+hasta primario completo,empleador,4
+estudios superiores,empleador,0
+sin estudios,estudiante,5
+hasta secundario completo,estudiante,5
+hasta primario completo,estudiante,6
+estudios superiores,estudiante,1
+sin estudios,jubilado,18
+hasta secundario completo,jubilado,3
+hasta primario completo,jubilado,4
+estudios superiores,jubilado,2
+empleado,buena,17
+empleador,buena,2
+estudiante,buena,6
+jubilado,buena,9
+ama de casa,buena,14
+cuentapropista,buena,3
+desocupado,buena,9
+empleado,regular,26
+empleador,regular,5
+estudiante,regular,7
+jubilado,regular,11
+ama de casa,regular,6
+cuentapropista,regular,3
+desocupado,regular,15
+empleado,es muy buena,3
+empleador,es muy buena,0
+estudiante,es muy buena,0
+jubilado,es muy buena,1
+ama de casa,es muy buena,2
+cuentapropista,es muy buena,0
+desocupado,es muy buena,2
+empleado,mala,2
+empleador,mala,1
+estudiante,mala,0
+jubilado,mala,2
+ama de casa,mala,2
+cuentapropista,mala,3
+desocupado,mala,1
+empleado,muy mala,1
+empleador,muy mala,1
+estudiante,muy mala,0
+jubilado,muy mala,2
+ama de casa,muy mala,1
+cuentapropista,muy mala,0
+desocupado,muy mala,1
+empleado,regular,26
+empleador,regular,5
+estudiante,regular,7
+jubilado,regular,11
+ama de casa,regular,6
+cuentapropista,regular,3
+desocupado,regular,15
+regular,lo ve regular,53
+buena,lo ve regular,17
+mala,lo ve regular,4
+buena,bien,42
+mala,bien,1
+es muy buena,bien,5
+regular,bien,13
+mala,mal,6
+regular,mal,6
+muy mala,mal,1
+es muy buena,muy bien,4
+muy mala,muy mal,3
+buena,muy mal,1
+es muy buena,muy bien,4
